@@ -6,8 +6,7 @@ use cosmwasm_std::{to_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response,
 use cw2::set_contract_version;
 
 use crate::error::ContractError;
-// use crate::msg::{ExecuteMsg, GetCountResponse, InstantiateMsg, QueryMsg};
-use crate::msg::{InstantiateMsg, ExecuteMsg};
+use crate::msg::{InstantiateMsg, ExecuteMsg, QueryMsg, CountResponse};
 use crate::state::{State, STATE};
 
 // version info for migration info
@@ -91,6 +90,26 @@ pub fn try_reset(deps: DepsMut, info: MessageInfo, count: i32) -> Result<Respons
   })?;
   Ok(Response::new().add_attribute("method", "reset"))
 }
+
+// Query Logic
+// The logic for query() is similar to that of execute(), except the fact that the query() function is called without the need of making a transaction by the end-user. 
+// Therefore, the argument info can be omitted in the query() function signature as there is no message information present to be processed.
+#[cfg_attr(not(feature = "library"), entry_point)]
+pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
+  match msg {
+    // Match and route the query message to the appropriate handler
+    QueryMsg::GetCount {} => to_binary(&query_count(deps)?),
+    // Return the response in byte-array format
+  }
+}
+fn query_count(deps: Deps) -> StdResult<CountResponse> {
+  let state = STATE.load(deps.storage)?;
+  // Load the current contract state
+  Ok(CountResponse { count: state.count })
+  // Form and return a CountResponse
+}
+
+
 
 // pub mod execute {
 //     use super::*;

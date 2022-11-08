@@ -1,4 +1,4 @@
-// The file src/msg.rs is where different types of messages and responses the smart contract can receive and return are defined.
+// The file src/msg.rs is where different types of messages and responses the smart contract can receive and return are DEFINED.
 
 // use cosmwasm_schema::{cw_serde, QueryResponses};
 use schemars::JsonSchema;
@@ -51,6 +51,37 @@ pub enum ExecuteMsg {
 //     "count": 5
 //   }
 // }
+
+// Defined in the file /src/msg.rs, a QueryMsg is received when an address tries to query information about the current state of the smart contract. 
+// Similar to the ExecuteMsg, QueryMsg is an enumerator and holds a list of possible query message structs with different names and attributes in order to cover the different types of query functions a user can invoke. The query() function demultiplexes these different types of messages and forwards them to the appropriate message handler logic.
+
+// In addition to handling how the queries are received, the contract also needs a structured way of outputting query responses. 
+// This is accomplished by defining response structs (e.g., CountResponse) in the file /src/msg.rs, so the querying party may know what to expect from the JSON response to be received.
+
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub enum QueryMsg {
+  // GetCount returns the current count as a json-encoded number
+  GetCount {},
+}
+// We define a custom struct for each query response
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+pub struct CountResponse {
+  pub count: i32,
+}
+// GetCount
+// The query message:
+
+// {
+//   "get_count": {}
+// }
+
+// The contract should return a CountResponse with the current count in JSON format.
+
+// {
+//   "count": 5
+// }
+
 
 
 // #[cw_serde]

@@ -1,5 +1,5 @@
 [package]
-name = "my-first-cosmwasm-contract"
+name = "cosmwasm_anatomy"
 version = "0.1.0"
 authors = ["alexdphan <alexphan0515@gmail.com>"]
 edition = "2021"
